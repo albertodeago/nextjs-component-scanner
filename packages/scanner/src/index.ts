@@ -1,4 +1,4 @@
 // Placeholder for scanner logic
-export const scan = () => {
+export const scan = (code: string) => {
   return "Scanner not implemented";
 };
