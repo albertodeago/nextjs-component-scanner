@@ -6,6 +6,7 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "test:scanner": "turbo run test --filter=scanner",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "ts:check": "turbo run ts:check"
   },
