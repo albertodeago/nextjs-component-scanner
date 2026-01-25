@@ -9,7 +9,7 @@
     ".": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "dev": "tsc --watch",
     "lint": "eslint . --max-warnings 0",
     "ts:check": "tsc --noEmit",
