@@ -6,10 +6,10 @@ import _traverse from "@babel/traverse";
 const traverse = _traverse.default || _traverse;
 
 type AnalyzedComponent = {
-  isClientComponent: boolean;
   component: {
     name: string | null;
     exportType: "default" | "named" | null;
+    isClientComponent: boolean;
   };
   importedComponents: {
     name: string;
@@ -195,10 +195,10 @@ export const scan = ({ code }: Input): AnalyzedComponent => {
   logDebug("local components:", localComponents);
 
   return {
-    isClientComponent,
     component: {
       name: state.exportedComponent?.name ?? null,
       exportType: state.exportedComponent?.exportType ?? null,
+      isClientComponent,
     },
     importedComponents,
     localComponents,

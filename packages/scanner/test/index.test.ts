@@ -14,10 +14,10 @@ describe("scanner", () => {
     const result = scan({ code });
 
     expect(result).toMatchObject({
-      isClientComponent: true,
       component: {
         name: "Button",
         exportType: "default",
+        isClientComponent: true,
       },
     });
   });
@@ -32,10 +32,10 @@ describe("scanner", () => {
     const result = scan({ code });
 
     expect(result).toMatchObject({
-      isClientComponent: false,
       component: {
         name: "ServerComponent",
         exportType: "named",
+        isClientComponent: false,
       },
     });
   });
@@ -50,7 +50,9 @@ describe("scanner", () => {
     const result = scan({ code });
 
     expect(result).toMatchObject({
-      isClientComponent: false,
+      component: {
+        isClientComponent: false,
+      },
       importedComponents: [
         {
           name: "Button",
@@ -71,7 +73,9 @@ describe("scanner", () => {
     const result = scan({ code });
 
     expect(result).toMatchObject({
-      isClientComponent: false,
+      component: {
+        isClientComponent: false,
+      },
       importedComponents: [
         {
           name: "MyButton", // The local name used in JSX
