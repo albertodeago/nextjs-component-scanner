@@ -226,10 +226,11 @@ export default function Home() {
 - **Test**: Added `test/fixtures/dynamic-imports-typed.tsx` and test case
 
 ### Bug 2: `sharedComponents` always empty
-- **Status**: TODO
-- **File**: `packages/core/src/aggregator.ts` (calculateStats or similar)
+- **Status**: FIXED
+- **File**: `packages/core/src/aggregator.ts`
 - **Issue**: Stats show `sharedComponents: []` but Card/Button/etc used in 10+ files
-- **Cause**: TBD - need to investigate sharedComponents calculation
+- **Cause**: Was tracking based on resolved `children` (file paths), but most imports don't resolve (path aliases, externals)
+- **Fix**: Changed to track imported components from `importedComponents` metadata using `source:importedName` key
 
 ### Bug 3: Stats type mismatch
 - **Status**: TODO

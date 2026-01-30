@@ -86,13 +86,14 @@ export function calculateStats(
   let clientComponents = 0;
   let serverComponents = 0;
 
-  // Track usage of each file
-  const usageMap = new Map<string, Set<string>>();
-
   // Track which files are effectively in the client bundle
   const effectiveClientSet = new Set<string>();
 
-  // Initialize usage map and count source-level components
+  // Track imported component usage by "source:name" key
+  // e.g., "@/components/ui:Card" or "next/link:default"
+  const importUsageMap = new Map<string, Set<string>>();
+
+  // Initialize and count source-level components
   for (const [id, result] of results) {
     if (result.metadata.component.isClientComponent) {
       clientComponents++;
@@ -101,12 +102,15 @@ export function calculateStats(
       serverComponents++;
     }
 
-    // Track which files use each child
-    for (const child of result.children) {
-      if (!usageMap.has(child.childId)) {
-        usageMap.set(child.childId, new Set());
+    // Track imported component usage from metadata
+    for (const imp of result.metadata.importedComponents) {
+      // Create a unique key for this component
+      // Use source + importedName for uniqueness
+      const key = `${imp.source}:${imp.importedName}`;
+      if (!importUsageMap.has(key)) {
+        importUsageMap.set(key, new Set());
       }
-      usageMap.get(child.childId)!.add(id);
+      importUsageMap.get(key)!.add(id);
     }
   }
 
@@ -135,12 +139,12 @@ export function calculateStats(
   const effectiveClientComponents = effectiveClientSet.size;
   const effectiveServerComponents = totalFiles - effectiveClientComponents;
 
-  // Find shared components (used by more than one file)
+  // Find shared components (imported by more than one file)
   const sharedComponents: SharedComponentUsage[] = [];
-  for (const [id, usedBy] of usageMap) {
+  for (const [key, usedBy] of importUsageMap) {
     if (usedBy.size > 1) {
       sharedComponents.push({
-        id,
+        id: key,
         usageCount: usedBy.size,
         usedBy: Array.from(usedBy).sort(),
       });
