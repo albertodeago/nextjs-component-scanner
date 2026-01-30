@@ -1,17 +1,32 @@
 // Helpers to identify specific AST patterns
-import type { VariableDeclarator, CallExpression } from "@babel/types";
+import type { VariableDeclarator, CallExpression, Expression } from "@babel/types";
+
+/**
+ * Unwrap TypeScript type assertions (TSAsExpression, TSSatisfiesExpression)
+ * to get the underlying expression.
+ * e.g., `dynamic(...) as ComponentType` -> `dynamic(...)`
+ */
+const unwrapTypeAssertion = (expr: Expression | null | undefined): Expression | null => {
+  if (!expr) return null;
+  if (expr.type === "TSAsExpression" || expr.type === "TSSatisfiesExpression") {
+    return unwrapTypeAssertion(expr.expression);
+  }
+  return expr;
+};
 
 export const getDynamicImportSource = (
   node: VariableDeclarator,
 ): string | null => {
   // Check for const Lazy = dynamic(() => import('./foo'))
   // or const Lazy = React.lazy(() => import('./foo'))
+  // Also handles: const Lazy = dynamic(...) as ComponentType
+  const init = unwrapTypeAssertion(node.init);
   if (
-    node.init?.type === "CallExpression" &&
-    (node.init.callee?.type === "Identifier" || // dynamic(...)
-      node.init.callee?.type === "MemberExpression") // React.lazy(...)
+    init?.type === "CallExpression" &&
+    (init.callee?.type === "Identifier" || // dynamic(...)
+      init.callee?.type === "MemberExpression") // React.lazy(...)
   ) {
-    const callee = node.init.callee;
+    const callee = init.callee;
     const isDynamic = callee.type === "Identifier" && callee.name === "dynamic";
     const isReactLazy =
       callee.type === "MemberExpression" &&
@@ -22,7 +37,7 @@ export const getDynamicImportSource = (
 
     if (isDynamic || isReactLazy) {
       // Traverse the first argument to find import()
-      const arg = node.init.arguments?.[0];
+      const arg = init.arguments?.[0];
       if (arg) {
         const getLocationFromImportCall = (
           n: CallExpression | undefined,

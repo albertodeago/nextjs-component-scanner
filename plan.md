@@ -214,3 +214,25 @@ export default function Home() {
 2. **Error handling**: Fail fast - exit completely and show error on failure.
 3. **Progress feedback**: File-by-file progress reporting.
 4. **Browser compatibility**: Show error explaining FS API unavailable + suggest Chrome/Edge.
+
+## Bugs Found (Demo App Testing)
+
+### Bug 1: `next/dynamic` with TSAsExpression not detected
+- **Status**: FIXED
+- **File**: `packages/core/src/visitors/shared/detect-dynamic-import.ts`
+- **Issue**: `const X = dynamic(...) as React.ComponentType<...>` not detected
+- **Cause**: Code checks `node.init.type === "CallExpression"` but with type assertion it's `"TSAsExpression"`
+- **Fix**: Added `unwrapTypeAssertion()` helper to unwrap TSAsExpression/TSSatisfiesExpression before checking
+- **Test**: Added `test/fixtures/dynamic-imports-typed.tsx` and test case
+
+### Bug 2: `sharedComponents` always empty
+- **Status**: TODO
+- **File**: `packages/core/src/aggregator.ts` (calculateStats or similar)
+- **Issue**: Stats show `sharedComponents: []` but Card/Button/etc used in 10+ files
+- **Cause**: TBD - need to investigate sharedComponents calculation
+
+### Bug 3: Stats type mismatch
+- **Status**: TODO
+- **File**: `packages/core/src/aggregator.ts` or types
+- **Issue**: Output has `totalFiles`, `clientComponents`, `serverComponents` but expected type has `totalRoutes`, `totalImportedComponents`, `uniqueImportedComponents`, etc.
+- **Cause**: Stats calculation doesn't match ProjectStats type definition

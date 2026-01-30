@@ -215,6 +215,36 @@ describe("scanner", () => {
     });
   });
 
+  it("given dynamic imports with type assertions, it detects them", () => {
+    const fixturePath = path.join(
+      import.meta.dirname,
+      "fixtures/dynamic-imports-typed.tsx",
+    );
+    const code = fs.readFileSync(fixturePath, "utf-8");
+
+    const result = scan({ code });
+
+    expect(result).toMatchObject({
+      importedComponents: expect.arrayContaining([
+        {
+          name: "TypedDynamic",
+          source: "./typed-component",
+          type: "default",
+          importedName: "default",
+        },
+        {
+          name: "TypedLazy",
+          source: "./typed-lazy-component",
+          type: "default",
+          importedName: "default",
+        },
+      ]),
+    });
+    // These should NOT be in localComponents
+    expect(result.localComponents).not.toContain("TypedDynamic");
+    expect(result.localComponents).not.toContain("TypedLazy");
+  });
+
   it("given a complex default export (e.g. HOC), it detects it", () => {
     const fixturePath = path.join(
       import.meta.dirname,
