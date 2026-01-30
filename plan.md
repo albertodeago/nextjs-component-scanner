@@ -233,7 +233,11 @@ export default function Home() {
 - **Fix**: Changed to track imported components from `importedComponents` metadata using `source:importedName` key
 
 ### Bug 3: Stats type mismatch
-- **Status**: TODO
-- **File**: `packages/core/src/aggregator.ts` or types
-- **Issue**: Output has `totalFiles`, `clientComponents`, `serverComponents` but expected type has `totalRoutes`, `totalImportedComponents`, `uniqueImportedComponents`, etc.
-- **Cause**: Stats calculation doesn't match ProjectStats type definition
+- **Status**: FIXED
+- **File**: `packages/core/src/project-types.ts`, `packages/core/src/aggregator.ts`
+- **Issue**: Missing useful stats like `totalRoutes`, `totalImportedComponents`, `uniqueImportedComponents`, etc.
+- **Fix**: Added new fields to `ProjectStats` type and updated `calculateStats`:
+  - `totalRoutes`, `totalLayouts` - count of pages vs layouts
+  - `totalImportedComponents`, `totalLocalComponents` - total usages
+  - `uniqueImportedComponents`, `uniqueLocalComponents` - distinct counts
+- **Note**: `calculateStats` now requires `entryPoints` as second argument

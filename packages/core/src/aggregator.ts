@@ -80,11 +80,23 @@ export function aggregate(
  * Calculates project statistics from scan results.
  */
 export function calculateStats(
-  results: Map<string, ScanResult>
+  results: Map<string, ScanResult>,
+  entryPoints: string[]
 ): ProjectStats {
   const totalFiles = results.size;
   let clientComponents = 0;
   let serverComponents = 0;
+
+  // Count routes vs layouts from entry points
+  let totalRoutes = 0;
+  let totalLayouts = 0;
+  for (const entry of entryPoints) {
+    if (getEntryType(entry) === "layout") {
+      totalLayouts++;
+    } else {
+      totalRoutes++;
+    }
+  }
 
   // Track which files are effectively in the client bundle
   const effectiveClientSet = new Set<string>();
@@ -92,6 +104,13 @@ export function calculateStats(
   // Track imported component usage by "source:name" key
   // e.g., "@/components/ui:Card" or "next/link:default"
   const importUsageMap = new Map<string, Set<string>>();
+
+  // Track unique local components
+  const uniqueLocalSet = new Set<string>();
+
+  // Count total usages
+  let totalImportedComponents = 0;
+  let totalLocalComponents = 0;
 
   // Initialize and count source-level components
   for (const [id, result] of results) {
@@ -104,6 +123,7 @@ export function calculateStats(
 
     // Track imported component usage from metadata
     for (const imp of result.metadata.importedComponents) {
+      totalImportedComponents++;
       // Create a unique key for this component
       // Use source + importedName for uniqueness
       const key = `${imp.source}:${imp.importedName}`;
@@ -111,6 +131,13 @@ export function calculateStats(
         importUsageMap.set(key, new Set());
       }
       importUsageMap.get(key)!.add(id);
+    }
+
+    // Track local components
+    for (const local of result.metadata.localComponents) {
+      totalLocalComponents++;
+      // Local components are unique per file, so combine file + name
+      uniqueLocalSet.add(`${id}:${local}`);
     }
   }
 
@@ -159,6 +186,12 @@ export function calculateStats(
 
   return {
     totalFiles,
+    totalRoutes,
+    totalLayouts,
+    totalImportedComponents,
+    totalLocalComponents,
+    uniqueImportedComponents: importUsageMap.size,
+    uniqueLocalComponents: uniqueLocalSet.size,
     clientComponents,
     serverComponents,
     effectiveClientComponents,

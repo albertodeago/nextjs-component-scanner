@@ -16,7 +16,19 @@ export type SharedComponentUsage = {
 };
 
 export type ProjectStats = {
+  // File counts
   totalFiles: number;
+  totalRoutes: number;
+  totalLayouts: number;
+
+  // Component counts (usages across all files)
+  totalImportedComponents: number;
+  totalLocalComponents: number;
+
+  // Unique component counts
+  uniqueImportedComponents: number;
+  uniqueLocalComponents: number;
+
   // Source-level: files with "use client" directive
   clientComponents: number;
   // Source-level: files without "use client" directive
@@ -25,8 +37,10 @@ export type ProjectStats = {
   effectiveClientComponents: number;
   // Runtime: files that stay on server
   effectiveServerComponents: number;
-  // Ratio based on effective counts
+  // Client/total ratio based on effective counts
   ratio: number;
+
+  // Components imported by multiple files
   sharedComponents: SharedComponentUsage[];
 };
 
