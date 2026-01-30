@@ -1,4 +1,5 @@
 import { Visitor } from "@babel/traverse";
+import type { VariableDeclarator } from "@babel/types";
 import { ScanContext } from "../types.js";
 import { getDynamicImportSource } from "./shared/detect-dynamic-import.js";
 
@@ -11,7 +12,8 @@ export const createDefinitionsVisitor = (ctx: ScanContext): Visitor => ({
     if (path.node.id.type === "Identifier") {
       // If it is a dynamic import, it's already handled by dynamic imports visitor.
       // We explicitly skip it here to avoid double counting it as a local definition.
-      if (!getDynamicImportSource(path.node)) {
+      // Type cast needed: @babel/traverse and @babel/types have slightly different node types
+      if (!getDynamicImportSource(path.node as VariableDeclarator)) {
         ctx.localDefinitions.add(path.node.id.name);
       }
     }

@@ -15,7 +15,10 @@
       "Bash(npm run cli:*)",
       "Bash(npm run test:ui:*)",
       "Bash(npm run test:coverage:*)",
-      "Bash(npx vitest:*)"
+      "Bash(npx vitest:*)",
+      "Bash(npm run ts:check:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run test:nextxray:*)"
     ]
   }
 }

@@ -1,0 +1,35 @@
+{
+  "name": "@nextxray/browser",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc --watch",
+    "lint": "eslint . --max-warnings 0",
+    "ts:check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/ui": "4.0.16",
+    "eslint": "9.39.1",
+    "typescript": "5.9.2",
+    "vitest": "4.0.16"
+  },
+  "dependencies": {
+    "@nextxray/core": "*"
+  }
+}

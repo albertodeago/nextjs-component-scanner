@@ -31,7 +31,7 @@ export class ProjectScanner {
     }
 
     const routes = aggregate(results, entryPoints, appDir);
-    const stats = calculateStats(results, entryPoints);
+    const stats = calculateStats(results);
 
     return { routes, stats };
   }

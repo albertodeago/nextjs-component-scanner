@@ -80,8 +80,7 @@ export function aggregate(
  * Calculates project statistics from scan results.
  */
 export function calculateStats(
-  results: Map<string, ScanResult>,
-  entryPoints: string[]
+  results: Map<string, ScanResult>
 ): ProjectStats {
   const totalFiles = results.size;
   let clientComponents = 0;

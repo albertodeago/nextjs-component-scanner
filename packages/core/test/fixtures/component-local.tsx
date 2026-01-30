@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any - it's a test
 const LocalButton = ({ children }: { children: any }) => (
   <button>{children}</button>
 );

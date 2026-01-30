@@ -34,7 +34,7 @@ export const scan = ({ code }: Input): AnalyzedComponent => {
   // Check for "use client" directive using AST
   // This avoids false positives from comments, strings, or JSX content
   const isClientComponent = ast.program.directives.some(
-    (directive) => directive.value.value === "use client"
+    (directive) => directive.value.value === "use client",
   );
 
   const ctx: ScanContext = {
@@ -53,6 +53,7 @@ export const scan = ({ code }: Input): AnalyzedComponent => {
     createJsxVisitor(ctx),
   ];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any - Babel types are complex, was not able to work around that
   traverse(ast as any, _traverse.visitors.merge(visitors));
 
   const importedComponents: AnalyzedComponent["importedComponents"] = [];
