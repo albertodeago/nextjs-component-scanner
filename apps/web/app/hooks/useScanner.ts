@@ -90,8 +90,13 @@ export function useScanner() {
 
       // Aggregate results
       const routes = aggregate(results, entryPoints, "/app");
-      const stats = calculateStats(results);
-      const result: ProjectScanResult = { routes, stats };
+      const stats = calculateStats(results, entryPoints);
+      // Convert Map to Record for JSON serialization
+      const resultsRecord: Record<string, ScanResult> = {};
+      for (const [key, value] of results) {
+        resultsRecord[key] = value;
+      }
+      const result: ProjectScanResult = { routes, stats, results: resultsRecord };
 
       setState({ status: "done", result });
     } catch (err) {

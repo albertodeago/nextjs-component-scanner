@@ -1,13 +1,14 @@
 "use client";
 
 import type { ProjectScanResult } from "@nextxray/browser";
+import { TreeView } from "./TreeView";
 
 interface ScanResultsProps {
   result: ProjectScanResult;
 }
 
 export function ScanResults({ result }: ScanResultsProps) {
-  const { stats, routes } = result;
+  const { stats, routes, results } = result;
   const { sharedComponents } = stats;
 
   return (
@@ -61,6 +62,8 @@ export function ScanResults({ result }: ScanResultsProps) {
           </ul>
         </section>
       )}
+
+      <TreeView routes={routes} results={results} />
 
       <details>
         <summary style={{ cursor: "pointer", marginBottom: "8px" }}>
