@@ -1,9 +1,12 @@
+#!/usr/bin/env node
 import fs from "fs";
 import path from "path";
-import { Crawler } from "./crawler.js";
-import { NodeHost } from "./node-host.js";
-import { ProjectScanner } from "./project-scanner.js";
-import { discoverEntryPoints } from "./node-discovery.js";
+import {
+  Crawler,
+  NodeHost,
+  ProjectScanner,
+  discoverEntryPoints,
+} from "@nextxray/node";
 
 const runFileMode = async (entryPath: string) => {
   console.log(`Starting crawl from: ${entryPath}`);
@@ -71,7 +74,7 @@ const main = async () => {
   const entryArg = process.argv[2];
 
   if (!entryArg) {
-    console.error("Usage: scanner <file|directory>");
+    console.error("Usage: nextxray <file|directory>");
     console.error("  file:      Scan a single file and print component tree");
     console.error("  directory: Scan Next.js app directory and output JSON");
     process.exit(1);

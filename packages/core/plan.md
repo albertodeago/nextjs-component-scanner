@@ -1,4 +1,4 @@
-# implementation Plan: `packages/scanner`
+# Implementation Plan: `@nextxray/*` packages
 
 ## Goal
 
@@ -85,13 +85,90 @@ We now have the tools to analyze a single component tree. We need to scale this 
   - ~~Current implementation uses simple string check (`code.includes('"use client"')`) which can give false positives if the string appears in comments.~~
   - Now uses AST-based detection via `ast.program.directives` - no false positives from comments, strings, or JSX content.
 
-## Phase 3.5: Browser Compatibility Safety Check
+## Phase 3.5: Multi-Package Architecture Migration ✅
 
-Ensure we haven't accidentally coupled the core logic to Node.js APIs.
+Split monolithic `packages/scanner` into scoped packages under `@nextxray/*` for clean separation of concerns and guaranteed browser compatibility.
 
-- [ ] **Browser Test**:
-  - Create a test that runs the `scan` function (without `NodeHost`) in a simulated browser environment (or just verify imports).
-  - Ensure no `fs`, `path`, or `enhanced-resolve` imports leak into the core `scanner/index.ts` or visitors.
+### Target Structure
+
+```
+packages/
+  core/      → @nextxray/core      ✅
+  node/      → @nextxray/node      ✅
+  cli/       → @nextxray/cli       ✅
+  browser/   → @nextxray/browser   (Phase 4)
+```
+
+### Dependency Graph
+
+```
+cli → node → core
+browser → core (Phase 4)
+```
+
+### Package Contents
+
+**@nextxray/core** (platform-agnostic, browser-safe):
+- `scan()` function + AST parsing
+- All visitor plugins (imports, exports, jsx, dynamic, definitions)
+- `ScannerHost` interface (contract only)
+- `Crawler` class (uses injected host)
+- `aggregate()` function
+- All types (`ScanResult`, `AnalyzedComponent`, `RouteEntry`, `ProjectStats`, etc.)
+
+**@nextxray/node** (Node.js specific):
+- `NodeHost` (ScannerHost implementation using fs + enhanced-resolve)
+- `discoverNextJsEntryPoints()` (fs-based file discovery)
+- `ProjectScanner` class (orchestrates discovery + crawl + aggregate)
+
+**@nextxray/cli**:
+- CLI entry point
+- Output formatting
+- File vs directory mode handling
+
+### Todo List
+
+- [x] **Setup monorepo structure**:
+  - Create `packages/core/`, `packages/node/`, `packages/cli/` directories
+  - Configure package.json for each with `@nextxray/*` names
+  - Setup tsconfig references between packages
+  - Configure shared build tooling
+
+- [x] **Migrate @nextxray/core**:
+  - Move: `index.ts`, `types.ts`, `debug.ts`, `contract.ts`, `crawler.ts`, `aggregator.ts`, `project-types.ts`
+  - Move: `visitors/` directory
+  - Update imports to be internal
+  - Configure exports in package.json
+  - Verify zero Node.js dependencies (no `fs`, `path`, `enhanced-resolve`)
+
+- [x] **Migrate @nextxray/node**:
+  - Move: `node-host.ts`, `node-discovery.ts`, `project-scanner.ts`
+  - Add `@nextxray/core` as dependency
+  - Update imports to use `@nextxray/core`
+  - Re-export core types for convenience
+
+- [x] **Migrate @nextxray/cli**:
+  - Move: `cli.ts`
+  - Add `@nextxray/node` as dependency
+  - Update imports
+  - Configure bin entry point
+
+- [x] **Update tests**:
+  - Split tests by package
+  - Core tests: scan function, visitors, crawler with mock host
+  - Node tests: NodeHost, ProjectScanner, discovery
+  - CLI tests: integration tests
+
+- [x] **Browser compatibility verification**:
+  - Add test that imports @nextxray/core in jsdom environment
+  - Verify bundle with esbuild `platform: 'browser'`
+
+- [x] **Cleanup**:
+  - Remove old `packages/scanner/`
+  - Update root package.json workspaces
+  - Update any documentation
+
+---
 
 ## Phase 4: Browser Implementation
 

@@ -1,8 +1,9 @@
 # Turborepo starter
 
-TODO: docs
+TODO:
 
-This Turborepo starter is maintained by the Turborepo core team.
+- docs, readme etc
+- rename repository
 
 ## Using this example
 

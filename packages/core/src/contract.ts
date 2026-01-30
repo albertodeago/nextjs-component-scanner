@@ -31,12 +31,3 @@ export interface ScannerHost {
    */
   resolve(source: string, importer: string): Promise<string | null>;
 }
-
-// Re-export project types for consumers
-export type {
-  EntryType,
-  RouteEntry,
-  SharedComponentUsage,
-  ProjectStats,
-  ProjectScanResult,
-} from "./project-types.js";

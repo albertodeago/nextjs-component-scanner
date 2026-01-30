@@ -1,0 +1,27 @@
+{
+  "name": "@nextxray/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "nextxray": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc --watch",
+    "cli": "tsx src/cli.ts",
+    "lint": "eslint . --max-warnings 0",
+    "ts:check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/node": "22.15.3",
+    "eslint": "9.39.1",
+    "tsx": "^4.21.0",
+    "typescript": "5.9.2"
+  },
+  "dependencies": {
+    "@nextxray/node": "*"
+  }
+}

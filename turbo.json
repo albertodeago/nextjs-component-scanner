@@ -14,6 +14,14 @@
     "test": {
       "dependsOn": ["^test"]
     },
+    "test:coverage": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "test:ui": {
+      "cache": false,
+      "persistent": true
+    },
     "ts:check": {
       "dependsOn": ["^ts:check"]
     },

@@ -104,6 +104,3 @@ export const scan = ({ code }: Input): AnalyzedComponent => {
     localComponents,
   };
 };
-
-// Re-export types for consumers
-export type { AnalyzedComponent, Input };

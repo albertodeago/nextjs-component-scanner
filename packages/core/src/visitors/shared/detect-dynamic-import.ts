@@ -1,4 +1,4 @@
-// Helperes to identify specific AST patterns
+// Helpers to identify specific AST patterns
 
 export const getDynamicImportSource = (node: any): string | null => {
   // Check for const Lazy = dynamic(() => import('./foo'))

@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { scan } from "../src/index.js";
+import { scan } from "../src/scan.js";
 import fs from "node:fs";
 import path from "node:path";
 
 describe("scanner", () => {
   it("given a client-component, it recognize it and returns the information", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/client-component.tsx",
+      import.meta.dirname,
+      "fixtures/client-component.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -24,8 +24,8 @@ describe("scanner", () => {
 
   it("given a server-component, it recognizes it", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/server-component.tsx",
+      import.meta.dirname,
+      "fixtures/server-component.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -42,8 +42,8 @@ describe("scanner", () => {
 
   it("given a component with a dependency, it detects the import", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/component-with-dependency.tsx",
+      import.meta.dirname,
+      "fixtures/component-with-dependency.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -66,8 +66,8 @@ describe("scanner", () => {
 
   it("given a component with an aliased import, it detects the import using the local name", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/component-with-aliased-import.tsx",
+      import.meta.dirname,
+      "fixtures/component-with-aliased-import.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -90,8 +90,8 @@ describe("scanner", () => {
 
   it("given a component with a default import, it detects the import", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/component-default-import.tsx",
+      import.meta.dirname,
+      "fixtures/component-default-import.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -111,8 +111,8 @@ describe("scanner", () => {
 
   it("given a component with a namespace import, it detects the usage", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/component-namespace-import.tsx",
+      import.meta.dirname,
+      "fixtures/component-namespace-import.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -132,8 +132,8 @@ describe("scanner", () => {
 
   it("given a component with a local component, it detects it", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/component-local.tsx",
+      import.meta.dirname,
+      "fixtures/component-local.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -146,8 +146,8 @@ describe("scanner", () => {
 
   it("given a barrel file, it detects re-exports", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/barrel-file.tsx",
+      import.meta.dirname,
+      "fixtures/barrel-file.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -189,8 +189,8 @@ describe("scanner", () => {
 
   it("given a component with dynamic imports, it detects them", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/dynamic-imports.tsx",
+      import.meta.dirname,
+      "fixtures/dynamic-imports.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -217,8 +217,8 @@ describe("scanner", () => {
 
   it("given a complex default export (e.g. HOC), it detects it", () => {
     const fixturePath = path.join(
-      process.cwd(),
-      "test/fixtures/complex-export.tsx",
+      import.meta.dirname,
+      "fixtures/complex-export.tsx",
     );
     const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -241,8 +241,8 @@ describe("scanner", () => {
   describe("use client directive detection", () => {
     it("detects use client with double quotes", () => {
       const fixturePath = path.join(
-        process.cwd(),
-        "test/fixtures/use-client-double-quotes.tsx",
+        import.meta.dirname,
+        "fixtures/use-client-double-quotes.tsx",
       );
       const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -253,8 +253,8 @@ describe("scanner", () => {
 
     it("detects use client with single quotes", () => {
       const fixturePath = path.join(
-        process.cwd(),
-        "test/fixtures/use-client-single-quotes.tsx",
+        import.meta.dirname,
+        "fixtures/use-client-single-quotes.tsx",
       );
       const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -265,8 +265,8 @@ describe("scanner", () => {
 
     it("does NOT detect use client in comments (false positive prevention)", () => {
       const fixturePath = path.join(
-        process.cwd(),
-        "test/fixtures/use-client-in-comment.tsx",
+        import.meta.dirname,
+        "fixtures/use-client-in-comment.tsx",
       );
       const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -277,8 +277,8 @@ describe("scanner", () => {
 
     it("does NOT detect use client in JSX strings (false positive prevention)", () => {
       const fixturePath = path.join(
-        process.cwd(),
-        "test/fixtures/use-client-in-jsx-string.tsx",
+        import.meta.dirname,
+        "fixtures/use-client-in-jsx-string.tsx",
       );
       const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -289,8 +289,8 @@ describe("scanner", () => {
 
     it("does NOT detect use client in variable strings (false positive prevention)", () => {
       const fixturePath = path.join(
-        process.cwd(),
-        "test/fixtures/use-client-in-variable.tsx",
+        import.meta.dirname,
+        "fixtures/use-client-in-variable.tsx",
       );
       const code = fs.readFileSync(fixturePath, "utf-8");
 
@@ -301,8 +301,8 @@ describe("scanner", () => {
 
     it("detects use client even with leading comments", () => {
       const fixturePath = path.join(
-        process.cwd(),
-        "test/fixtures/use-client-with-leading-comment.tsx",
+        import.meta.dirname,
+        "fixtures/use-client-with-leading-comment.tsx",
       );
       const code = fs.readFileSync(fixturePath, "utf-8");
 

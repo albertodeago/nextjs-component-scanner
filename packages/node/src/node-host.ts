@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import EnhancedResolve from "enhanced-resolve";
-import { ScannerHost } from "./contract.js";
+import type { ScannerHost } from "@nextxray/core";
 
 const { ResolverFactory, CachedInputFileSystem } = EnhancedResolve;
 

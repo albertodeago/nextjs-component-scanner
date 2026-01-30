@@ -1,7 +1,11 @@
-import { ScannerHost, ScanResult } from "./contract.js";
-import { Crawler } from "./crawler.js";
-import { aggregate, calculateStats } from "./aggregator.js";
-import { ProjectScanResult } from "./project-types.js";
+import {
+  Crawler,
+  aggregate,
+  calculateStats,
+  type ScannerHost,
+  type ScanResult,
+  type ProjectScanResult,
+} from "@nextxray/core";
 
 export class ProjectScanner {
   private host: ScannerHost;

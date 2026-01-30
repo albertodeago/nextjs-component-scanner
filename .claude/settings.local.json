@@ -9,7 +9,13 @@
       "Bash(node dist/cli.js:*)",
       "Bash(ls:*)",
       "Bash(npm test)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm run test:scanner:*)",
+      "Bash(npm run cli:*)",
+      "Bash(npm run test:ui:*)",
+      "Bash(npm run test:coverage:*)",
+      "Bash(npx vitest:*)"
     ]
   }
 }

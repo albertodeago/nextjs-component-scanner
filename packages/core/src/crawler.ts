@@ -1,5 +1,5 @@
 import { ScannerHost, ScanResult } from "./contract.js";
-import { scan } from "./index.js";
+import { scan } from "./scan.js";
 import { debug } from "./debug.js";
 
 export class Crawler {

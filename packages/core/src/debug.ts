@@ -1,5 +1,5 @@
 import debug from "debug";
 
-const debugInstance = debug("nextjs-component-scanner");
+const debugInstance = debug("nextxray");
 
 export { debugInstance as debug };

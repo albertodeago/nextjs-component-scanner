@@ -1,19 +1,24 @@
 {
-  "name": "nextjs-component-scanner",
+  "name": "nextxray",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "test:scanner": "turbo run test --filter=scanner",
+    "test:nextxray": "turbo run test --filter=@nextxray/*",
+    "test:coverage": "turbo run test:coverage --filter=@nextxray/*",
+    "test:ui": "vitest --ui --coverage",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "ts:check": "turbo run ts:check"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/ui": "4.0.16",
     "prettier": "3.7.4",
     "turbo": "2.7.3",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vitest": "4.0.16"
   },
   "engines": {
     "node": ">=22"

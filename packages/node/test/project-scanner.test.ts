@@ -3,9 +3,9 @@ import path from "node:path";
 import { ProjectScanner } from "../src/project-scanner.js";
 import { NodeHost } from "../src/node-host.js";
 import { discoverEntryPoints } from "../src/node-discovery.js";
-import { extractRoute, getEntryType } from "../src/aggregator.js";
+import { extractRoute, getEntryType } from "@nextxray/core";
 
-const MOCK_APP_DIR = path.join(process.cwd(), "test/mock-app/app");
+const MOCK_APP_DIR = path.join(import.meta.dirname, "mock-app/app");
 
 describe("node-discovery", () => {
   it("discovers all entry points in the mock app", async () => {
