@@ -22,9 +22,11 @@ export default function Home() {
   return (
     <div className="min-h-screen px-5 py-10">
       <header className="mx-auto max-w-225 text-center">
-        <h1 className="mb-2 text-4xl font-bold tracking-tight">Next.js X-Ray</h1>
-        <p className="mb-8 text-muted-foreground">
-          Analyze your Next.js project&apos;s component structure
+        <h1 className="glow-title mb-3 text-4xl font-bold tracking-tight">Next.js X-Ray</h1>
+        <p className="mx-auto mb-8 max-w-lg text-muted-foreground">
+          Visualize your component tree and see server/client boundaries at a
+          glance. Runs entirely in your browser — your code never leaves your
+          machine.
         </p>
 
         {state.status === "error" && (

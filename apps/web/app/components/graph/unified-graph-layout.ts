@@ -16,9 +16,9 @@ type TreeNode = {
 
 // Use hex colors directly since React Flow SVG edges may not have access to CSS variables
 function getEdgeColor(data: ComponentNodeData): string {
-  if (data.isClient) return "#ef4444"; // --color-client
-  if (data.isInheritedClient) return "#f59e0b"; // --color-inherited
-  return "#22c55e"; // --color-server
+  if (data.isClient) return "#f87171"; // --color-client
+  if (data.isInheritedClient) return "#fbbf24"; // --color-inherited
+  return "#2dd4bf"; // --color-server
 }
 
 /**

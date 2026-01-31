@@ -24,7 +24,7 @@ export function ProjectPicker({ onSelect, disabled }: ProjectPickerProps) {
   };
 
   return (
-    <Button onClick={handleClick} disabled={disabled} size="lg">
+    <Button onClick={handleClick} disabled={disabled} size="lg" variant="outline">
       Select Project Folder
     </Button>
   );
