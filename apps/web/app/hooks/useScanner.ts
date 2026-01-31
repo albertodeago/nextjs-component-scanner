@@ -12,6 +12,7 @@ import {
   type ProjectScanResult,
   type ScanResult,
 } from "@nextxray/browser";
+import { trackEvent } from "../components/CronitorProvider";
 
 export type ScanState =
   | { status: "idle" }
@@ -109,6 +110,7 @@ export function useScanner() {
         results: resultsRecord,
       };
 
+      trackEvent("ProjectAnalyzed");
       setState({ status: "done", result });
     } catch (err) {
       setState({

@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
-    "start": "next start",
+    "preview": "npx serve@latest out",
     "lint": "eslint --max-warnings 0",
     "ts:check": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@cronitorio/cronitor-rum-nextjs": "0.5.1",
     "@nextxray/browser": "*",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-slot": "^1.2.4",

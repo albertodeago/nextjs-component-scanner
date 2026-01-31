@@ -6,6 +6,7 @@
     "dev": "turbo run dev",
     "dev:web": "npm run dev -w web",
     "dev:demo": "npm run dev -w demo",
+    "preview:web": "npm run preview -w web",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:nextxray": "turbo run test --filter=@nextxray/*",
