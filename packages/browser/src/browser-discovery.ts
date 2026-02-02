@@ -52,6 +52,7 @@ export async function isNextJsProject(
 
 /**
  * Discovers Next.js entry points (page.tsx and layout.tsx) in an app directory.
+ * Checks both /app and /src/app locations (Next.js supports both).
  * @param rootHandle The root directory handle
  * @param appDirName The name of the app directory (default: "app")
  * @param rootPath Virtual root path prefix (default: "/")
@@ -66,14 +67,28 @@ export async function discoverEntryPoints(
 ): Promise<string[]> {
   const entryPoints: string[] = [];
 
-  // First, get the app directory handle
+  // Try to find app directory - check both /app and /src/app
   let appHandle: FileSystemDirectoryHandle;
+  let appPath: string;
+
   try {
     appHandle = await rootHandle.getDirectoryHandle(appDirName);
+    appPath = rootPath.endsWith("/")
+      ? `${rootPath}${appDirName}`
+      : `${rootPath}/${appDirName}`;
   } catch {
-    throw new Error(
-      `Could not find "${appDirName}" directory. Is this a Next.js app router project?`
-    );
+    // Try src/app
+    try {
+      const srcHandle = await rootHandle.getDirectoryHandle("src");
+      appHandle = await srcHandle.getDirectoryHandle(appDirName);
+      appPath = rootPath.endsWith("/")
+        ? `${rootPath}src/${appDirName}`
+        : `${rootPath}/src/${appDirName}`;
+    } catch {
+      throw new Error(
+        `Could not find "${appDirName}" directory. Is this a Next.js app router project?`
+      );
+    }
   }
 
   async function walkDir(
@@ -96,10 +111,6 @@ export async function discoverEntryPoints(
       }
     }
   }
-
-  const appPath = rootPath.endsWith("/")
-    ? `${rootPath}${appDirName}`
-    : `${rootPath}/${appDirName}`;
 
   await walkDir(appHandle, appPath);
   return entryPoints.sort();

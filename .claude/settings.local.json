@@ -24,7 +24,8 @@
       "mcp__chrome-devtools__take_screenshot",
       "mcp__chrome-devtools__navigate_page",
       "WebFetch(domain:cronitor.io)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(npm test:*)"
     ]
   }
 }

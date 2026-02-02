@@ -248,6 +248,46 @@ describe("discoverEntryPoints", () => {
     );
   });
 
+  it("discovers entry points when app is inside src", async () => {
+    // Next.js supports both /app and /src/app structures
+    const mockFs = createMockFileSystem("project", {
+      "next.config.js": "module.exports = {}",
+      "package.json": JSON.stringify({
+        name: "my-app",
+        dependencies: { next: "14.0.0" },
+      }),
+      src: {
+        app: {
+          "page.tsx": "export default function Home() {}",
+          dashboard: {
+            "page.tsx": "export default function Dashboard() {}",
+          },
+        },
+      },
+    });
+
+    const entryPoints = await discoverEntryPoints(mockFs);
+    expect(entryPoints).toHaveLength(2);
+    expect(entryPoints).toContain("/src/app/page.tsx");
+    expect(entryPoints).toContain("/src/app/dashboard/page.tsx");
+  });
+
+  it("prefers /app over /src/app when both exist", async () => {
+    const mockFs = createMockFileSystem("project", {
+      app: {
+        "page.tsx": "export default function RootHome() {}",
+      },
+      src: {
+        app: {
+          "page.tsx": "export default function SrcHome() {}",
+        },
+      },
+    });
+
+    const entryPoints = await discoverEntryPoints(mockFs);
+    expect(entryPoints).toEqual(["/app/page.tsx"]);
+  });
+
   it("uses custom app directory name", async () => {
     const mockFs = createMockFileSystem("project", {
       src: {
