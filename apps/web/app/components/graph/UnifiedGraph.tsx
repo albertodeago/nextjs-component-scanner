@@ -39,13 +39,9 @@ export function UnifiedGraph({ routes, results, mode }: UnifiedGraphProps) {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
 
-  // Calculate dynamic height based on node count
-  const graphHeight = Math.max(400, Math.min(800, nodes.length * 40));
-
   return (
     <div
-      className="w-full rounded-lg border border-border bg-background/50"
-      style={{ height: graphHeight }}
+      className="w-full rounded-lg border border-border bg-background/50 h-[calc(100svh-18rem)] min-h-80"
     >
       <ReactFlow
         nodes={nodes}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useScanner } from "./hooks/useScanner";
 import { ProjectPicker } from "./components/ProjectPicker";
 import { ScanResults } from "./components/ScanResults";
@@ -10,10 +10,18 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const { state, scan, reset, checkSupport } = useScanner();
+  const resultsRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     checkSupport();
   }, [checkSupport]);
+
+  // Scroll to results when scan completes
+  useEffect(() => {
+    if (state.status === "done" && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [state.status]);
 
   const isScanning =
     state.status === "checking" ||
@@ -34,7 +42,9 @@ export default function Home() {
         <ThemeToggle />
       </div>
       <header className="mx-auto max-w-225 text-center">
-        <h1 className="glow-title mb-3 text-4xl font-bold tracking-tight">Next.js X-Ray</h1>
+        <h1 className="glow-title mb-3 text-4xl font-bold tracking-tight">
+          Next.js X-Ray
+        </h1>
         <p className="mx-auto mb-8 max-w-lg text-muted-foreground">
           Visualize your component tree and see server/client boundaries at a
           glance. Runs entirely in your browser — your code never leaves your
@@ -97,7 +107,7 @@ export default function Home() {
       </header>
 
       {state.status === "done" && (
-        <main>
+        <main ref={resultsRef}>
           <ScanResults result={state.result} />
         </main>
       )}
